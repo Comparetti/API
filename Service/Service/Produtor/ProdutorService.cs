@@ -23,7 +23,7 @@ namespace Service.Service.Produtor
         {
             var produtor = await _context.Produtores.FindAsync(id);
             if (produtor == null)
-                throw new KeyNotFoundException("Produtor não encontrado.");
+                return null;
 
             return produtor;
         }
@@ -50,7 +50,7 @@ namespace Service.Service.Produtor
         {
             var produtor = await _context.Produtores.FindAsync(produtorDto.Id);
             if (produtor == null)
-                throw new KeyNotFoundException("Produtor não encontrado.");
+                return null;
 
             produtor.Nome = produtorDto.Nome;
             produtor.Sobrenome = produtorDto.Sobrenome;
@@ -65,14 +65,15 @@ namespace Service.Service.Produtor
             return produtor;
         }
 
-        public async Task ExcluirProdutor(int id)
+        public async Task<bool> ExcluirProdutor(int id)
         {
             var produtor = await _context.Produtores.FindAsync(id);
             if (produtor == null)
-                throw new KeyNotFoundException("Produtor não encontrado.");
+                return false;
 
             _context.Produtores.Remove(produtor);
             await _context.SaveChangesAsync();
+            return true;
         }
     }
 

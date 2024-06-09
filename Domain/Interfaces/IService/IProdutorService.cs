@@ -9,7 +9,7 @@ namespace Domain.Interfaces.IService
         Task<ProdutorModel> BuscarProdutorPorId(int idProdutor);
         Task<ProdutorModel> CriarProdutor(ProdutorCriacaoDTO produtorDto);
         Task<ProdutorModel> EditarProdutor(ProdutorEdicaoDTO produtorDto);
-        Task ExcluirProdutor(int idProdutor);
+        Task<bool> ExcluirProdutor(int idProdutor);
     }
 
 }

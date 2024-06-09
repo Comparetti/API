@@ -27,6 +27,9 @@ namespace Thunders.Controllers
         public async Task<ActionResult<ProdutorModel>> BuscarProdutorPorId(int id)
         {
             var produtor = await _produtorService.BuscarProdutorPorId(id);
+            if (produtor == null)
+                return NotFound("Produtor não encontrado.");
+
             return Ok(produtor);
         }
 
@@ -41,14 +44,20 @@ namespace Thunders.Controllers
         public async Task<ActionResult<ProdutorModel>> EditarProdutor(ProdutorEdicaoDTO produtorDto)
         {
             var produtor = await _produtorService.EditarProdutor(produtorDto);
+            if (produtor == null)
+                return NotFound("Produtor não encontrado.");
+
             return Ok(produtor);
         }
 
         [HttpDelete("ExcluirProdutor/{id}")]
-        public async Task<ActionResult> ExcluirProdutor(int id)
+        public async Task<IActionResult> ExcluirProdutor(int id)
         {
-            await _produtorService.ExcluirProdutor(id);
-            return Ok();
+            var sucesso = await _produtorService.ExcluirProdutor(id);
+            if (!sucesso)
+                return NotFound("Produtor não encontrado.");
+
+            return NoContent();
         }
     }
 
