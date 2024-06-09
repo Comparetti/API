@@ -46,8 +46,6 @@ O projeto Thunders API é uma aplicação ASP.NET Core para gerenciar consumidor
 
 Uma vez que a aplicação estiver em execução, você pode acessar a documentação da API gerada pelo Swagger em:
 
-http://localhost:<porta>/swagger
-
 ## Endpoints da API
 
 ### Consumidor
