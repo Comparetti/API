@@ -13,7 +13,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IProdutorService, ProdutorService>();
 builder.Services.AddScoped<IConsumidorService, ConsumidorService>();
 
-// Configuração do DbContext
 if (builder.Configuration.GetValue<bool>("FeatureToggles:UseInMemoryDatabase"))
 {
     builder.Services.AddDbContext<AppDbContext>(options =>
@@ -27,7 +26,7 @@ else
 
 var app = builder.Build();
 
-// Só executar migrações se não estiver usando banco de dados em memória
+// Configuração para migrações, se não estiver usando banco de dados em memória
 if (!builder.Configuration.GetValue<bool>("FeatureToggles:UseInMemoryDatabase"))
 {
     using (var scope = app.Services.CreateScope())
