@@ -23,7 +23,7 @@ namespace Service.Service.Consumidor
         {
             var consumidor = await _context.Consumidores.FindAsync(id);
             if (consumidor == null)
-                throw new KeyNotFoundException("Consumidor não encontrado.");
+                return null;
 
             return consumidor;
         }
@@ -50,12 +50,12 @@ namespace Service.Service.Consumidor
         {
             var consumidor = await _context.Consumidores.FindAsync(consumidorDto.Id);
             if (consumidor == null)
-                throw new KeyNotFoundException("Consumidor não encontrado.");
+                return null;
 
             consumidor.Nome = consumidorDto.Nome;
             consumidor.Sobrenome = consumidorDto.Sobrenome;
             consumidor.ConsumoEnergia = consumidorDto.ConsumoEnergia;
-            consumidor.PreferenciaEnergia = consumidorDto.PreferenciaEnergia = consumidorDto.PreferenciaEnergia;
+            consumidor.PreferenciaEnergia = consumidorDto.PreferenciaEnergia;
             consumidor.DespesaMensalEnergia = consumidorDto.DespesaMensalEnergia;
             consumidor.ContratoAtivo = consumidorDto.ContratoAtivo;
 
@@ -64,14 +64,16 @@ namespace Service.Service.Consumidor
             return consumidor;
         }
 
-        public async Task ExcluirConsumidor(int id)
+
+        public async Task<bool> ExcluirConsumidor(int id)
         {
             var consumidor = await _context.Consumidores.FindAsync(id);
             if (consumidor == null)
-                throw new KeyNotFoundException("Consumidor não encontrado.");
+                return false;
 
             _context.Consumidores.Remove(consumidor);
             await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

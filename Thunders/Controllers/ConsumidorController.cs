@@ -27,6 +27,9 @@ namespace Thunders.Controllers
         public async Task<ActionResult<ConsumidorModel>> BuscarConsumidorPorId(int id)
         {
             var consumidor = await _consumidorService.BuscarConsumidorPorId(id);
+            if (consumidor == null)
+                return NotFound("Consumidor não encontrado.");
+
             return Ok(consumidor);
         }
 
@@ -41,14 +44,20 @@ namespace Thunders.Controllers
         public async Task<ActionResult<ConsumidorModel>> EditarConsumidor(ConsumidorEdicaoDTO consumidorDto)
         {
             var consumidor = await _consumidorService.EditarConsumidor(consumidorDto);
+            if (consumidor == null)
+                return NotFound("Consumidor não encontrado.");
+
             return Ok(consumidor);
         }
 
         [HttpDelete("ExcluirConsumidor/{id}")]
-        public async Task<ActionResult> ExcluirConsumidor(int id)
+        public async Task<IActionResult> ExcluirConsumidor(int id)
         {
-            await _consumidorService.ExcluirConsumidor(id);
-            return Ok();
+            var sucesso = await _consumidorService.ExcluirConsumidor(id);
+            if (!sucesso)
+                return NotFound("Consumidor não encontrado.");
+
+            return NoContent();
         }
     }
 

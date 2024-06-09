@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Data": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT": "false"
+      }
+    }
+  }
+}

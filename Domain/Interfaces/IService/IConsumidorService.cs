@@ -9,7 +9,7 @@ namespace Domain.Interfaces.IService
         Task<ConsumidorModel> BuscarConsumidorPorId(int idConsumidor);
         Task<ConsumidorModel> CriarConsumidor(ConsumidorCriacaoDTO consumidorDto);
         Task<ConsumidorModel> EditarConsumidor(ConsumidorEdicaoDTO consumidorDto);
-        Task ExcluirConsumidor(int idConsumidor);
+        Task<bool> ExcluirConsumidor(int idConsumidor);
     }
 
 }

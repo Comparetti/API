@@ -6,7 +6,6 @@ using Service.Service.Produtor;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -14,15 +13,30 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IProdutorService, ProdutorService>();
 builder.Services.AddScoped<IConsumidorService, ConsumidorService>();
 
-
-builder.Services.AddDbContext<AppDbContext>(options =>
+// Configuração do DbContext
+if (builder.Configuration.GetValue<bool>("FeatureToggles:UseInMemoryDatabase"))
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseInMemoryDatabase("DatabaseName"));
+}
+else
+{
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+}
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Só executar migrações se não estiver usando banco de dados em memória
+if (!builder.Configuration.GetValue<bool>("FeatureToggles:UseInMemoryDatabase"))
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        dbContext.Database.Migrate();
+    }
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -30,9 +44,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
