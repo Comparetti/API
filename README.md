@@ -1,4 +1,4 @@
-# Thunders API
+# API
 
 ## Descrição do Projeto
 
